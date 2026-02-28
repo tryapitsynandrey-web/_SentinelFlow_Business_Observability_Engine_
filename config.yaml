@@ -1,0 +1,38 @@
+global:
+  concurrency_limit: 10
+  default_timeout_seconds: 15.0
+  scheduler_mode: "run_once"
+  interval_seconds: 60
+  observability:
+    metrics_enabled: true
+    tracing_enabled: true
+    service_name: "sentinelflow"
+    otlp_endpoint: "http://localhost:4317"
+    metrics_port: 9108
+    admin_port: 9109
+
+checks:
+  - metric_id: "httpbin_json_test"
+    ingestor:
+      type: "http_api"
+      url: "https://httpbin.org/json"
+      method: "GET"
+      json_path: ""
+    evaluators:
+      - type: "threshold"
+        operator: "<"
+        value: 1
+    alert_policy:
+      cooldown_seconds: 300
+      dedupe_window_seconds: 3600
+      severity: "high"
+    handlers:
+      - type: "slack_webhook"
+        webhook_url_env_key: "SLACK_WEBHOOK_URL"
+    resilience:
+      timeout_seconds: 10.0
+      max_inflight: 5
+      circuit_breaker:
+        enabled: true
+        failure_threshold: 5
+        reset_timeout_seconds: 30

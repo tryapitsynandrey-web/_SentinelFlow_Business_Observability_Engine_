@@ -1,0 +1,40 @@
+{
+  "id": null,
+  "uid": "sentinelflow",
+  "title": "SentinelFlow Operational Dashboard",
+  "tags": ["sre", "sentinelflow"],
+  "timezone": "browser",
+  "schemaVersion": 16,
+  "version": 0,
+  "refresh": "5s",
+  "panels": [
+    {
+      "id": 1,
+      "title": "Check Execution Rate",
+      "type": "timeseries",
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0},
+      "targets": [{"expr": "rate(sentinelflow_checks_total[1m])", "refId": "A"}]
+    },
+    {
+      "id": 2,
+      "title": "Check Duration (p95)",
+      "type": "timeseries",
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 0},
+      "targets": [{"expr": "histogram_quantile(0.95, rate(sentinelflow_check_duration_seconds_bucket[5m]))", "refId": "A"}]
+    },
+    {
+      "id": 3,
+      "title": "Alert Count",
+      "type": "timeseries",
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 8},
+      "targets": [{"expr": "sentinelflow_alerts_total", "refId": "A"}]
+    },
+    {
+      "id": 4,
+      "title": "Inflight Checks",
+      "type": "timeseries",
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 8},
+      "targets": [{"expr": "sentinelflow_inflight_requests", "refId": "A"}]
+    }
+  ]
+}

@@ -1,0 +1,3 @@
+from typing import Any
+
+def connect(database: Any, **kwargs: Any) -> Any: ...
